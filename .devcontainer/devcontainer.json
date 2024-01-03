@@ -1,0 +1,26 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+	"name": "NestJS",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": {
+		"dockerfile": "Dockerfile"
+	  },
+	
+	  "customizations": {
+		"vscode": {
+		  "extensions": ["alexcvzz.vscode-sqlite", "ashinzekene.nestjs", "esbenp.prettier-vscode", "humao.rest-client"],
+		  "settings": {
+			"editor.formatOnSave": true,
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.wordWrap": "wordWrapColumn",
+			"editor.wordWrapColumn": 120,
+			"prettier.printWidth": 120,
+			"prettier.resolveGlobalModules": true
+		  }
+		}
+	  },
+	  "forwardPorts": [3000],
+	
+	  "remoteUser": "node"
+}
