@@ -5,3 +5,5 @@ RUN apk update && apk add git
 RUN npm install -g @nestjs/cli
 
 USER node
+
+WORKDIR /app

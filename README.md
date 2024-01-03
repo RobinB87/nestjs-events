@@ -10,3 +10,11 @@ npm i --save @nestjs/mapped-types
 # cli
 
 nest g controller <name>
+
+# postgres (via adminer)
+
+system: PostgreSQL
+server: postgres (as hostname === postgres in .yml)
+username: postgres
+pw: (see dockercompose)
+db: <nothing>
