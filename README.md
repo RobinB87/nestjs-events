@@ -6,6 +6,7 @@ course for nestjs
 
 nest new <project_name>
 npm i --save @nestjs/mapped-types
+npm i --save @nestjs/typeorm typeorm pg
 
 # cli
 
