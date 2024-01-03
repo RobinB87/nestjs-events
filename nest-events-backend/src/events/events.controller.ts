@@ -9,10 +9,13 @@ import {
   Post,
 } from '@nestjs/common';
 import { CreateEventDto } from './create-event.dto';
+import { Event } from './event.entity';
 import { UpdateEventDto } from './update-event-dto';
 
 @Controller('/events')
 export class EventsController {
+  private events: Event[] = [];
+
   @Get()
   findAll() {}
 
@@ -23,6 +26,11 @@ export class EventsController {
 
   @Post()
   create(@Body() input: CreateEventDto) {
+    const event = {
+      ...input,
+      when: new Date(input.when),
+    };
+
     return input;
   }
 
