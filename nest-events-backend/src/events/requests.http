@@ -9,5 +9,8 @@ POST http://localhost:3000/events
 Content-Type: application/json
 
 {
-    "key": "value"
+    "name": "event5",
+    "description": "event5 descr",
+    "when": "2024-02-05",
+    "address": "Blaatiebla5"
 }
