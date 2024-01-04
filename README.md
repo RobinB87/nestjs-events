@@ -5,8 +5,9 @@ course for nestjs
 # npm
 
 nest new <project_name>
-npm i --save @nestjs/mapped-types
-npm i --save @nestjs/typeorm typeorm pg
+npm i @nestjs/mapped-types
+npm i @nestjs/typeorm typeorm pg
+npm i class-validator class-transformer
 
 # cli
 

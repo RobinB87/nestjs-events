@@ -14,3 +14,15 @@ Content-Type: application/json
     "when": "2024-02-05",
     "address": "Blaatiebla5"
 }
+
+### PATCH - verify global validation pipe is working
+// type date and name min length 5
+PATCH http://localhost:3000/events/3
+Content-Type: application/json
+
+{
+    "name": "XXX",
+    "description": "event5 descr",
+    "when": "wrong",
+    "address": "Blaatiebla5"
+}

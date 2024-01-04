@@ -5,8 +5,10 @@ import {
   Get,
   HttpCode,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, MoreThan, Repository } from 'typeorm';
@@ -26,8 +28,8 @@ export class EventsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.repository.findOneBy({ id: +id });
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.repository.findOneBy({ id: id });
   }
 
   @Get('/practice')
@@ -57,8 +59,11 @@ export class EventsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() input: UpdateEventDto) {
-    const event = await this.findOne(id);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() input: UpdateEventDto,
+  ) {
+    const event = await this.repository.findOneBy({ id: id });
     const eventForUpdate = {
       ...event,
       ...input,
@@ -70,8 +75,8 @@ export class EventsController {
 
   @Delete()
   @HttpCode(204)
-  async remove(@Param('id') id: string) {
-    const event = await this.repository.findOneBy({ id: +id });
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const event = await this.repository.findOneBy({ id: id });
     this.repository.remove(event);
   }
 }
