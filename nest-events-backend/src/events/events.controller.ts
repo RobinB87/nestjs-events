@@ -12,7 +12,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, MoreThan, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateEventDto } from './create-event.dto';
 import { Event } from './event.entity';
 import { UpdateEventDto } from './update-event-dto';
@@ -38,24 +38,6 @@ export class EventsController {
     const event = await this.repository.findOneBy({ id: id });
     if (!event) throw new NotFoundException();
     return event;
-  }
-
-  @Get('/practice')
-  practice() {
-    return this.repository.find({
-      select: ['id', 'when'],
-      where: [
-        {
-          id: MoreThan(3),
-        },
-        {
-          description: Like('%nt5%'),
-        },
-      ],
-      take: 2,
-      // skip: ...
-      order: { id: 'DESC' },
-    });
   }
 
   @Post()
