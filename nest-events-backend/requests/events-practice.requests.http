@@ -3,3 +3,9 @@ GET http://localhost:3000/events-practice
 
 ### GET
 GET http://localhost:3000/events-practice/practice2
+
+### GET
+GET http://localhost:3000/events-practice/practice3
+
+### GET
+GET http://localhost:3000/events-practice/practice4
