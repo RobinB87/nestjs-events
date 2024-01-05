@@ -26,4 +26,14 @@ export class EventsPracticeController {
       order: { id: 'DESC' },
     });
   }
+
+  @Get('/practice2')
+  practice2() {
+    // By default only the event is loaded, without the relation
+    // add { eager: true } to the entity when you ALWAYS want to load full object, but be careful with this
+    return this.repository.findOne({
+      where: { id: 1 },
+      relations: ['attendees'],
+    });
+  }
 }
