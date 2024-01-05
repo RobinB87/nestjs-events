@@ -15,6 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './create-event.dto';
 import { Event } from './event.entity';
+import { EventsService } from './events.service';
 import { UpdateEventDto } from './update-event-dto';
 
 @Controller('/events')
@@ -23,6 +24,7 @@ export class EventsController {
 
   constructor(
     @InjectRepository(Event) private readonly repository: Repository<Event>,
+    private readonly eventsService: EventsService,
   ) {}
 
   @Get()
@@ -35,7 +37,7 @@ export class EventsController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    const event = await this.repository.findOneBy({ id: id });
+    const event = await this.eventsService.getEvent(id);
     if (!event) throw new NotFoundException();
     return event;
   }
