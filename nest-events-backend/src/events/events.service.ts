@@ -19,10 +19,20 @@ export class EventsService {
   }
 
   public async getEvent(id: number): Promise<Event | undefined> {
-    const query = this.getEventsBaseQuery().andWhere('e.id = :id', { id });
+    const query = this.getEventsWithAttendeeCountQuery().andWhere(
+      'e.id = :id',
+      { id },
+    );
 
     this.logger.debug(query.getSql());
 
     return await query.getOne();
+  }
+
+  private getEventsWithAttendeeCountQuery() {
+    return this.getEventsBaseQuery().loadRelationCountAndMap(
+      'e.attendeeCount',
+      'e.attendees',
+    );
   }
 }

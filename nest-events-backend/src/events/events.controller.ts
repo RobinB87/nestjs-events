@@ -13,10 +13,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateEventDto } from './create-event.dto';
+import { CreateEventDto } from './inputs/create-event.dto';
 import { Event } from './event.entity';
 import { EventsService } from './events.service';
-import { UpdateEventDto } from './update-event-dto';
+import { UpdateEventDto } from './inputs/update-event-dto';
 
 @Controller('/events')
 export class EventsController {

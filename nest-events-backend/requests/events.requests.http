@@ -2,7 +2,7 @@
 GET http://localhost:3000/events
 
 ### GET id
-GET http://localhost:3000/events/5
+GET http://localhost:3000/events/1
 
 ### GET NOT FOUND EXC
 GET http://localhost:3000/events/123123
