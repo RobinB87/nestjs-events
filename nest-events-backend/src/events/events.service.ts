@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from './event.entity';
 import { ListEvents, WhenEventFilter } from './inputs/list.events';
+import { PaginateOptions, paginate } from 'src/pagination/paginator';
 
 @Injectable()
 export class EventsService {
@@ -19,11 +20,11 @@ export class EventsService {
       .orderBy('e.id', 'DESC');
   }
 
-  public getEventsWithAttendeeCountFiltered(filter?: ListEvents) {
+  private getEventsWithAttendeeCountFilteredQuery(filter?: ListEvents) {
     let query = this.getEventsWithAttendeeCountQuery();
 
     if (!filter) {
-      return query.getMany();
+      return query;
     }
 
     if (filter.when) {
@@ -52,7 +53,17 @@ export class EventsService {
       }
     }
 
-    return query.getMany();
+    return query;
+  }
+
+  public async getEventsWithAttendeeCountFilteredPaginated(
+    filter: ListEvents,
+    paginateOptions: PaginateOptions,
+  ) {
+    return await paginate(
+      await this.getEventsWithAttendeeCountFilteredQuery(filter),
+      paginateOptions,
+    );
   }
 
   public async getEvent(id: number): Promise<Event | undefined> {

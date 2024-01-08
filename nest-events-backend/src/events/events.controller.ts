@@ -11,6 +11,8 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -30,12 +32,19 @@ export class EventsController {
   ) {}
 
   @Get()
+  @UsePipes(new ValidationPipe({ transform: true })) // trick to populate query classes with defaults when they are not provided
   async findAll(@Query() filter: ListEvents) {
-    this.logger.log('Hit the findAll route');
     const events =
-      await this.eventsService.getEventsWithAttendeeCountFiltered(filter);
+      await this.eventsService.getEventsWithAttendeeCountFilteredPaginated(
+        filter,
+        {
+          total: true,
+          currentPage: filter.page,
+          limit: 10,
+        },
+      );
 
-    this.logger.debug(`Found ${events.length} events`);
+    this.logger.debug(`Found ${events.total} events`);
     return events;
   }
 
