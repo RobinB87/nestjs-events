@@ -74,4 +74,15 @@ export class EventsPracticeController {
     event.attendees.push(attendee);
     await this.repository.save(event);
   }
+
+  // example of using query builder for updating
+  // when updating 100 or 1000's of records, using querybuilder is better than defaults
+  // @Get('bla')
+  // async bla() {
+  //   await this.attendeeRepository
+  //     .createQueryBuilder('s')
+  //     .update()
+  //     .set({ name: 'Confidential' })
+  //     .execute();
+  // }
 }
