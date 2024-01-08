@@ -40,7 +40,7 @@ export class EventsController {
         {
           total: true,
           currentPage: filter.page,
-          limit: 10,
+          limit: 2,
         },
       );
 
