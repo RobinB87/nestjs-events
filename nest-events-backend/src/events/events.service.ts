@@ -19,33 +19,40 @@ export class EventsService {
       .orderBy('e.id', 'DESC');
   }
 
-  public async getEventsWithAttendeeCountFiltered(filter?: ListEvents) {
+  public getEventsWithAttendeeCountFiltered(filter?: ListEvents) {
     let query = this.getEventsWithAttendeeCountQuery();
 
-    if (!filter) return await query.getMany();
+    if (!filter) {
+      return query.getMany();
+    }
 
     if (filter.when) {
       if (filter.when == WhenEventFilter.Today) {
         query = query.andWhere(
-          'e.when >= CURDATE() AND e.when <= CURDATE() + INTERVAL 1 DAY',
+          `e.when >= now() AND e.when <= now() + interval '1 day'`,
         );
       }
+
       if (filter.when == WhenEventFilter.Tomorrow) {
         query = query.andWhere(
-          'e.when >= CURDATE() + INTERVAL 1 DAY AND e.when <= CURDATE() + INTERVAL 2 DAY',
+          `e.when >= now() + interval '1 day' AND e.when <= now() + interval '2 day'`,
         );
       }
+
       if (filter.when == WhenEventFilter.ThisWeek) {
-        query = query.andWhere('YEARWEEK(e.when, 1) = YEARWEEK(CURDATE(), 1)');
+        query = query.andWhere(
+          `date_part('week', e.when) = date_part('week', now())`,
+        );
       }
+
       if (filter.when == WhenEventFilter.NextWeek) {
         query = query.andWhere(
-          'YEARWEEK(e.when, 1) = YEARWEEK(CURDATE(), 1) + 1',
+          `date_part('week', e.when) = date_part('week', now()) + 1`,
         );
       }
     }
 
-    return await query.getMany();
+    return query.getMany();
   }
 
   public async getEvent(id: number): Promise<Event | undefined> {
