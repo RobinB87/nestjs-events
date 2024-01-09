@@ -9,6 +9,8 @@ npm i @nestjs/mapped-types
 npm i @nestjs/typeorm typeorm pg
 npm i class-validator class-transformer
 npm i @nestjs/config
+npm i @nestjs/passport passport passport-local
+npm i -D @types/passport-local
 
 # cli
 
