@@ -2,7 +2,7 @@
 GET http://localhost:3000/events
 
 ### GET id
-GET http://localhost:3000/events/1
+GET http://localhost:3000/events/7
 
 ### GET query
 GET http://localhost:3000/events?when=2
@@ -16,9 +16,10 @@ GET http://localhost:3000/events/123123
 ### POST
 POST http://localhost:3000/events
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYm9ib2JvIiwic3ViIjoyLCJpYXQiOjE3MDQ4MTI0MjgsImV4cCI6MTcwNDgxNjAyOH0.cO89ynPITwoF2Anjt8_EXgDnFkAsLHuS4Gbe-GCpARo
 
 {
-    "name": "event5",
+    "name": "event with token",
     "description": "event5 descr",
     "when": "2024-02-05",
     "address": "Blaatiebla5"
