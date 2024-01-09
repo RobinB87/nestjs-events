@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   Logger,
@@ -66,12 +67,19 @@ export class EventsController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuardJwt)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() input: UpdateEventDto,
+    @CurrentUser() user: User,
   ) {
     const event = await this.repository.findOneBy({ id: id });
     if (!event) throw new NotFoundException();
+    if (event.organizerId !== user.id)
+      throw new ForbiddenException(
+        null,
+        'You are not authorized to update this event',
+      );
 
     const eventForUpdate = {
       ...event,
@@ -83,12 +91,25 @@ export class EventsController {
   }
 
   @Delete()
+  @UseGuards(AuthGuardJwt)
   @HttpCode(204)
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    const result = await this.eventsService.deleteEvent(id);
+  async remove(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: User,
+  ) {
+    const event = await this.repository.findOneBy({ id: id });
+    if (!event) throw new NotFoundException();
+    if (event.organizerId !== user.id)
+      throw new ForbiddenException(
+        null,
+        'You are not authorized to remove this event',
+      );
 
-    if (result?.affected !== 1) {
-      throw new NotFoundException();
-    }
+    await this.eventsService.deleteEvent(id);
+
+    // NOT required anymore, the custom delete query was to save another trip to the db, but is now not really possible because user check required first..
+    // if (result?.affected !== 1) {
+    //   throw new NotFoundException();
+    // }
   }
 }
