@@ -13,6 +13,8 @@ npm i @nestjs/passport passport passport-local
 npm i -D @types/passport-local
 npm i @nestjs/jwt passport-jwt
 npm i -D @types/passport-jwt
+npm i bcrypt
+npm i -D @types/bcrypt
 
 # cli
 
