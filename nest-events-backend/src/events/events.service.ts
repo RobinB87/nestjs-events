@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/user.entity';
 import { PaginateOptions, paginate } from 'src/pagination/paginator';
 import { DeleteResult, Repository } from 'typeorm';
 import { Event } from './event.entity';
-import { ListEvents, WhenEventFilter } from './inputs/list.events';
 import { CreateEventDto } from './inputs/create-event.dto';
-import { User } from 'src/auth/user.entity';
+import { ListEvents, WhenEventFilter } from './inputs/list.events';
+import { UpdateEventDto } from './inputs/update-event-dto';
 
 @Injectable()
 export class EventsService {
@@ -91,6 +92,14 @@ export class EventsService {
       ...input,
       when: new Date(input.when),
       organizer: user,
+    });
+  }
+
+  async updateEvent(event: Event, input: UpdateEventDto): Promise<Event> {
+    return this.eventsRepository.save({
+      ...event,
+      ...input,
+      when: input.when ? new Date(input.when) : event.when,
     });
   }
 

@@ -16,12 +16,9 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { AuthGuardJwt } from 'src/auth/auth-guard.jwt';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/auth/user.entity';
-import { Repository } from 'typeorm';
-import { Event } from './event.entity';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './inputs/create-event.dto';
 import { ListEvents } from './inputs/list.events';
@@ -31,10 +28,7 @@ import { UpdateEventDto } from './inputs/update-event-dto';
 export class EventsController {
   private readonly logger = new Logger(EventsController.name);
 
-  constructor(
-    @InjectRepository(Event) private readonly repository: Repository<Event>,
-    private readonly eventsService: EventsService,
-  ) {}
+  constructor(private readonly eventsService: EventsService) {}
 
   @Get()
   @UsePipes(new ValidationPipe({ transform: true })) // trick to populate query classes with defaults when they are not provided
@@ -73,7 +67,7 @@ export class EventsController {
     @Body() input: UpdateEventDto,
     @CurrentUser() user: User,
   ) {
-    const event = await this.repository.findOneBy({ id: id });
+    const event = await this.eventsService.getEvent(id);
     if (!event) throw new NotFoundException();
     if (event.organizerId !== user.id)
       throw new ForbiddenException(
@@ -81,13 +75,7 @@ export class EventsController {
         'You are not authorized to update this event',
       );
 
-    const eventForUpdate = {
-      ...event,
-      ...input,
-      when: input.when ? new Date(input.when) : event.when,
-    };
-
-    return this.repository.save(eventForUpdate);
+    return await this.eventsService.updateEvent(event, input);
   }
 
   @Delete()
@@ -97,7 +85,7 @@ export class EventsController {
     @Param('id', ParseIntPipe) id: number,
     @CurrentUser() user: User,
   ) {
-    const event = await this.repository.findOneBy({ id: id });
+    const event = await this.eventsService.getEvent(id);
     if (!event) throw new NotFoundException();
     if (event.organizerId !== user.id)
       throw new ForbiddenException(
