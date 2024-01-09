@@ -1,0 +1,12 @@
+### POST
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "robobobo",
+    "password": "password1",
+    "retyptedPassword": "password1",
+    "email": "robo@bobo.com",
+    "firstName": "robob",
+    "lastName": "bobob"
+}

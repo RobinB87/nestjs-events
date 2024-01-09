@@ -3,10 +3,10 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "robo",
-    "password": "password"
+    "username": "robobobo",
+    "password": "password1"
 }
 
 ### GET
 GET http://localhost:3000/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYm8iLCJzdWIiOjEsImlhdCI6MTcwNDgwNDg4NywiZXhwIjoxNzA0ODA4NDg3fQ.CaCm2okY5l70IU8XxGFqEe-52IkalLqqVaei6cmU8R0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYm9ib2JvIiwic3ViIjoyLCJpYXQiOjE3MDQ4MDgyNzksImV4cCI6MTcwNDgxMTg3OX0.gGkMzt6eqz5LLJBiwNFk8qh2N6CfLhUUEDJwp5hTJSY
