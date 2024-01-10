@@ -1,6 +1,13 @@
 import { Expose } from 'class-transformer';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Event } from './event.entity';
+import { User } from 'src/auth/user.entity';
 
 export enum AttendeeAnswerEnum {
   Accepted = 1,
@@ -18,9 +25,13 @@ export class Attendee {
   @Expose()
   name: string;
 
-  @ManyToOne(() => Event, (event) => event.attendees, { nullable: false }) // use { nullable: false } when an attendee can not exists without an event
+  @ManyToOne(() => Event, (event) => event.attendees, { nullable: true }) // use { nullable: false } when an attendee can not exists without an event
   // @JoinColumn({ name: 'event_id', referencedColumnName: 'secondary' }) // use when you want to point to a different column
+  @JoinColumn()
   event: Event;
+
+  @Column()
+  eventId: number; // creates a relationship, this saves a roundtrip to the db, to get an event first and then associate it with an attendee
 
   @Column('enum', {
     enum: AttendeeAnswerEnum,
@@ -28,4 +39,10 @@ export class Attendee {
   })
   @Expose()
   answer: AttendeeAnswerEnum;
+
+  @ManyToOne(() => (user) => user.attended)
+  user: User;
+
+  @Column()
+  userId: number;
 }

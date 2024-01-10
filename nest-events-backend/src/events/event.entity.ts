@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Attendee } from './attendee.entity';
+import { PaginationResult } from 'src/pagination/paginator';
 
 @Entity()
 export class Event {
@@ -47,3 +48,5 @@ export class Event {
   @Expose()
   attendeeCount?: number;
 }
+
+export type PaginatedEvents = PaginationResult<Event>;
