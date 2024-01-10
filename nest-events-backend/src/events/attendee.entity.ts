@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Event } from './event.entity';
 
@@ -10,9 +11,11 @@ export enum AttendeeAnswerEnum {
 @Entity()
 export class Attendee {
   @PrimaryGeneratedColumn()
+  @Expose()
   id: number;
 
   @Column()
+  @Expose()
   name: string;
 
   @ManyToOne(() => Event, (event) => event.attendees, { nullable: false }) // use { nullable: false } when an attendee can not exists without an event
@@ -23,5 +26,6 @@ export class Attendee {
     enum: AttendeeAnswerEnum,
     default: AttendeeAnswerEnum.Rejected,
   })
+  @Expose()
   answer: AttendeeAnswerEnum;
 }
