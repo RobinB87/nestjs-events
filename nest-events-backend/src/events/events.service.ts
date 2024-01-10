@@ -126,4 +126,20 @@ export class EventsService {
       userId,
     });
   }
+
+  getEventsAttendedByUserIdPaginated(
+    userId: number,
+    paginateOptions: PaginateOptions,
+  ): Promise<PaginatedEvents> {
+    return paginate<Event>(
+      this.getEventsAttendedByUserIdQuery(userId),
+      paginateOptions,
+    );
+  }
+
+  private getEventsAttendedByUserIdQuery(userId: number) {
+    return this.getEventsBaseQuery()
+      .leftJoinAndSelect('e.attendees', 'a')
+      .where('a.userId = :userId', { userId });
+  }
 }
