@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/user.entity';
 import { PaginateOptions, paginate } from 'src/pagination/paginator';
 import { DeleteResult, Repository } from 'typeorm';
-import { Event } from './event.entity';
+import { Event, PaginatedEvents } from './event.entity';
 import { CreateEventDto } from './inputs/create-event.dto';
 import { ListEvents, WhenEventFilter } from './inputs/list.events';
 import { UpdateEventDto } from './inputs/update-event-dto';
@@ -59,17 +59,17 @@ export class EventsService {
     return query;
   }
 
-  public async getEventsWithAttendeeCountFilteredPaginated(
+  async getEventsWithAttendeeCountFilteredPaginated(
     filter: ListEvents,
     paginateOptions: PaginateOptions,
-  ) {
+  ): Promise<PaginatedEvents> {
     return await paginate(
       await this.getEventsWithAttendeeCountFilteredQuery(filter),
       paginateOptions,
     );
   }
 
-  public async getEvent(id: number): Promise<Event | undefined> {
+  async getEvent(id: number): Promise<Event | undefined> {
     const query = this.getEventsWithAttendeeCountQuery().andWhere(
       'e.id = :id',
       { id },
@@ -87,7 +87,7 @@ export class EventsService {
     );
   }
 
-  public async createEvent(input: CreateEventDto, user: User): Promise<Event> {
+  async createEvent(input: CreateEventDto, user: User): Promise<Event> {
     return this.eventsRepository.save({
       ...input,
       when: new Date(input.when),
@@ -103,11 +103,27 @@ export class EventsService {
     });
   }
 
-  public async deleteEvent(id: number): Promise<DeleteResult> {
+  async deleteEvent(id: number): Promise<DeleteResult> {
     return await this.eventsRepository
       .createQueryBuilder('e')
       .delete()
       .where('id = :id', { id })
       .execute();
+  }
+
+  getEventsOrganizedByUserIdPaginated(
+    userId: number,
+    paginateOptions: PaginateOptions,
+  ): Promise<PaginatedEvents> {
+    return paginate<Event>(
+      this.getEventsOrganizedByUserIdQuery(userId),
+      paginateOptions,
+    );
+  }
+
+  private getEventsOrganizedByUserIdQuery(userId: number) {
+    return this.getEventsBaseQuery().where('e.organizerId = :userId', {
+      userId,
+    });
   }
 }
