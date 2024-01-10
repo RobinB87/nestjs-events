@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Query,
   SerializeOptions,
   UseInterceptors,
@@ -16,7 +17,10 @@ export class EventsOrganizedByUserController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(@Param() userId: number, @Query('page') page = 1) {
+  findAll(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Query('page', ParseIntPipe) page = 1,
+  ) {
     return this.eventsService.getEventsOrganizedByUserIdPaginated(userId, {
       currentPage: page,
       limit: 5,

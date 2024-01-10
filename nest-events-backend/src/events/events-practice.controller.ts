@@ -50,7 +50,7 @@ export class EventsPracticeController {
     event.id = 1;
 
     const attendee = new Attendee();
-    attendee.name = 'Johnnyboy the 2nd';
+    // attendee.name = 'Johnnyboy the 2nd';
     attendee.event = event;
 
     await this.attendeeRepository.save(attendee);
@@ -69,7 +69,7 @@ export class EventsPracticeController {
     });
 
     const attendee = new Attendee();
-    attendee.name = 'Using Cascade';
+    // attendee.name = 'Using Cascade';
 
     event.attendees.push(attendee);
     await this.repository.save(event);

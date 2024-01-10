@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,7 +16,7 @@ export class EventAttendeesController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(@Param('eventId') eventId: number) {
+  findAll(@Param('eventId', ParseIntPipe) eventId: number) {
     return this.attendeesService.findByEventId(eventId);
   }
 }
