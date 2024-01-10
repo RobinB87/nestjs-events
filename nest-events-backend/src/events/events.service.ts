@@ -94,19 +94,23 @@ export class EventsService {
   }
 
   async createEvent(input: CreateEventDto, user: User): Promise<Event> {
-    return this.eventsRepository.save({
-      ...input,
-      when: new Date(input.when),
-      organizer: user,
-    });
+    return this.eventsRepository.save(
+      new Event({
+        ...input,
+        when: new Date(input.when),
+        organizer: user,
+      }),
+    );
   }
 
   async updateEvent(event: Event, input: UpdateEventDto): Promise<Event> {
-    return this.eventsRepository.save({
-      ...event,
-      ...input,
-      when: input.when ? new Date(input.when) : event.when,
-    });
+    return this.eventsRepository.save(
+      new Event({
+        ...event,
+        ...input,
+        when: input.when ? new Date(input.when) : event.when,
+      }),
+    );
   }
 
   async deleteEvent(id: number): Promise<DeleteResult> {
