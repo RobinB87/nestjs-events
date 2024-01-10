@@ -8,7 +8,7 @@ GET http://localhost:3000/events/7
 GET http://localhost:3000/events?when=2
 
 ### GET pagination
-GET http://localhost:3000/events?page=3
+GET http://localhost:3000/events?page=2
 
 ### GET NOT FOUND EXC
 GET http://localhost:3000/events/123123
