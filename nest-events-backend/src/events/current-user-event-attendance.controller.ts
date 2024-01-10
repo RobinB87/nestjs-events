@@ -2,6 +2,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  DefaultValuePipe,
   Get,
   NotFoundException,
   Param,
@@ -30,14 +31,17 @@ export class CurrentUserEventAttendanceController {
   @Get()
   @UseGuards(AuthGuardJwt)
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(@CurrentUser() user: User, @Query('page', ParseIntPipe) page = 1) {
+  findAll(
+    @CurrentUser() user: User,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+  ) {
     return this.eventsService.getEventsAttendedByUserIdPaginated(user.id, {
       currentPage: page,
       limit: 6,
     });
   }
 
-  @Get('/:eventId')
+  @Get(':eventId')
   @UseGuards(AuthGuardJwt)
   @UseInterceptors(ClassSerializerInterceptor)
   async findOne(
@@ -54,7 +58,7 @@ export class CurrentUserEventAttendanceController {
     return attendee;
   }
 
-  @Put('/:eventId')
+  @Put(':eventId')
   @UseGuards(AuthGuardJwt)
   @UseInterceptors(ClassSerializerInterceptor)
   createOrUpdate(
