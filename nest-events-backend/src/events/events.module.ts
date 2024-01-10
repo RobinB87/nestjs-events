@@ -11,7 +11,7 @@ import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Attendee, Event])],
+  imports: [TypeOrmModule.forFeature([Attendee, Event])], // User ??
   controllers: [
     CurrentUserEventAttendanceController,
     EventAttendeesController,

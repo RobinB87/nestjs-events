@@ -36,7 +36,7 @@ export class Attendee {
   @Expose()
   answer: AttendeeAnswerEnum;
 
-  @ManyToOne(() => (user) => user.attended)
+  @ManyToOne(() => User, (user) => user.attended)
   @Expose()
   user: User;
 
