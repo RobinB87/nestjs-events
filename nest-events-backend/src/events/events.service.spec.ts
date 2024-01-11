@@ -28,4 +28,17 @@ describe('EventsService', () => {
     service = module.get<EventsService>(EventsService);
     repository = module.get<Repository<Event>>(getRepositoryToken(Event));
   });
+
+  describe('updateEvent', () => {
+    it('should update the event', async () => {
+      const repoSpy = jest
+        .spyOn(repository, 'save')
+        .mockResolvedValue({ id: 1 } as Event); // save = async (returns promise that should be resolved), so we use mockResolvedValue
+
+      expect(
+        service.updateEvent(new Event({ id: 1 }), { name: 'New name' }),
+      ).resolves.toEqual({ id: 1 });
+      expect(repoSpy).toHaveBeenCalledWith({ id: 1, name: 'New name' });
+    });
+  });
 });

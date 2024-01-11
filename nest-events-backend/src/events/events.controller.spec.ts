@@ -58,6 +58,13 @@ describe('EventsController', () => {
     );
 
     expect(findSpy).toHaveBeenCalledTimes(1);
-    expect(deleteSpy).toHaveBeenCalledTimes(1);
+    expect(deleteSpy).toHaveBeenCalledTimes(0);
   });
+
+  //   it('should throw ForbiddenException when trying to delete event that is not organized by self', async () => {
+  //     const validEvent = { id: 1, organizerId: 456 };
+  //     const findSpy = jest
+  //       .spyOn(eventsService, 'findOne')
+  //       .mockResolvedValue(() => new Event({ id: 1, name: 'some event' }));
+  //   });
 });
