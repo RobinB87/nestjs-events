@@ -1,16 +1,22 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as paginator from '../pagination/paginator';
 import { Event } from './event.entity';
 import { EventsService } from './events.service';
+
+jest.mock('../pagination/paginator');
 
 describe('EventsService', () => {
   let service: EventsService;
   let repository: Repository<Event>;
   let selectQb;
   let deleteQb;
+  let mockedPaginate;
 
   beforeEach(async () => {
+    mockedPaginate = paginator.paginate as jest.Mock;
+
     deleteQb = {
       where: jest.fn(),
       execute: jest.fn(),
@@ -80,6 +86,54 @@ describe('EventsService', () => {
         id: eventToDeleteId,
       });
       expect(executeSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('getEventsAttendedByUserIdPaginated', () => {
+    it('should return a list of paginated events', async () => {
+      const orderBySpy = jest
+        .spyOn(selectQb, 'orderBy')
+        .mockReturnValue(selectQb);
+      const leftJoinSpy = jest
+        .spyOn(selectQb, 'leftJoinAndSelect')
+        .mockReturnValue(selectQb);
+      const whereSpy = jest.spyOn(selectQb, 'where').mockReturnValue(selectQb);
+
+      const paginatedObject = {
+        first: 1,
+        last: 1,
+        total: 10,
+        limit: 10,
+        data: [],
+      };
+
+      mockedPaginate.mockResolvedValue(paginatedObject);
+
+      const paginatedParamsObject = {
+        limit: 1,
+        currentPage: 1,
+      };
+
+      expect(
+        service.getEventsAttendedByUserIdPaginated(500, paginatedParamsObject),
+      ).resolves.toEqual(paginatedObject);
+
+      expect(orderBySpy).toHaveBeenCalledTimes(1);
+      expect(orderBySpy).toHaveBeenCalledWith('e.id', 'DESC');
+
+      expect(leftJoinSpy).toHaveBeenCalledTimes(1);
+      expect(leftJoinSpy).toHaveBeenCalledWith('e.attendees', 'a');
+
+      expect(whereSpy).toHaveBeenCalledTimes(1);
+      expect(whereSpy).toHaveBeenCalledWith('a.userId = :userId', {
+        userId: 500,
+      });
+
+      expect(mockedPaginate).toHaveBeenCalledTimes(1);
+      expect(mockedPaginate).toHaveBeenCalledWith(
+        selectQb,
+        paginatedParamsObject,
+      );
     });
   });
 });
