@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Event } from '../events/event.entity';
-import { Attendee } from 'src/events/attendee.entity';
+import { Attendee } from '../events/attendee.entity';
 
 @Entity()
 export class User {

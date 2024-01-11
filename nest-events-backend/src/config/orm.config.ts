@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User } from 'src/auth/user.entity';
-import { Attendee } from 'src/events/attendee.entity';
+import { User } from '../auth/user.entity';
+import { Attendee } from '../events/attendee.entity';
 import { Event } from '../events/event.entity';
 
 // export default factory function is required

@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { User } from 'src/auth/user.entity';
+import { User } from '../auth/user.entity';
 import {
   Column,
   Entity,
@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Attendee } from './attendee.entity';
-import { PaginationResult } from 'src/pagination/paginator';
+import { PaginationResult } from '../pagination/paginator';
 
 @Entity()
 export class Event {
