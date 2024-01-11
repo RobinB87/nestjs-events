@@ -5,7 +5,7 @@ Content-Type: application/json
 {
     "username": "robobobo",
     "password": "password1",
-    "retyptedPassword": "password1",
+    "retypedPassword": "password1",
     "email": "robo@bobo.com",
     "firstName": "robob",
     "lastName": "bobob"
