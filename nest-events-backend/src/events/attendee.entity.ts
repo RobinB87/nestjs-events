@@ -21,7 +21,10 @@ export class Attendee {
   @Expose()
   id: number;
 
-  @ManyToOne(() => Event, (event) => event.attendees, { nullable: true }) // use { nullable: false } when an attendee can not exists without an event
+  @ManyToOne(() => Event, (event) => event.attendees, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  }) // use { nullable: false } when an attendee can not exists without an event
   // @JoinColumn({ name: 'event_id', referencedColumnName: 'secondary' }) // use when you want to point to a different column
   @JoinColumn()
   event: Event;

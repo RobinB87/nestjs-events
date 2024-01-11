@@ -86,7 +86,7 @@ export class EventsController {
     return await this.eventsService.updateEvent(event, input);
   }
 
-  @Delete()
+  @Delete(':id')
   @UseGuards(AuthGuardJwt)
   @HttpCode(204)
   async remove(
