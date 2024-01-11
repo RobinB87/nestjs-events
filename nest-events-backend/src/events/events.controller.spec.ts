@@ -1,10 +1,10 @@
+import { NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { User } from '../auth/user.entity';
 import { Event } from './event.entity';
 import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { ListEvents } from './inputs/list.events';
-import { User } from '../auth/user.entity';
-import { NotFoundException } from '@nestjs/common';
 
 describe('EventsController', () => {
   let eventsController: EventsController;
@@ -13,7 +13,7 @@ describe('EventsController', () => {
 
   beforeAll(() => console.log('logged once for the "group"'));
   beforeEach(() => {
-    // before every test
+    // before every test in GROUP
     eventsService = new EventsService(eventsRepository);
     eventsController = new EventsController(eventsService);
   });
