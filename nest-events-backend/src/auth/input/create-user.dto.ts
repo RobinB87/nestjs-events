@@ -13,9 +13,9 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @Length(5)
+  @Length(2)
   firstName: string;
 
-  @Length(5)
+  @Length(2)
   lastName: string;
 }
