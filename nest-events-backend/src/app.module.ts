@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
       load: [ormConfig],
       expandVariables: true,
       // ignoreEnvFile: true, // when you want to ignore env files because stuff comes from e.g. docker
-      // envFilePath: when you want a different name / path for the .env
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     TypeOrmModule.forRootAsync({
       // allows registering a config async
