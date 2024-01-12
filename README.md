@@ -32,3 +32,7 @@ db: <nothing>
 
 npm i @nestjs/graphql graphql
 npm i @nestjs/apollo apollo-server-express
+
+Use playground via
+
+- http://localhost:3000/graphql
