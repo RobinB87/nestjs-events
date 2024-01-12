@@ -27,3 +27,8 @@ server: postgres (as hostname === postgres in .yml)
 username: postgres
 pw: (see dockercompose)
 db: <nothing>
+
+# graphql
+
+npm i @nestjs/graphql graphql
+npm i @nestjs/apollo apollo-server-express
