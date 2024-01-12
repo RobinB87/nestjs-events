@@ -55,8 +55,8 @@ describe('Events (e2e)', () => {
       .get('/events/1')
       .expect(200)
       .then((response) => {
-        console.log(response.body);
-        // expect(response.body.data.length).toBe(0);
+        expect(response.body.id).toBe(1);
+        expect(response.body.name).toBe('Interesting Party');
       });
   });
 });
