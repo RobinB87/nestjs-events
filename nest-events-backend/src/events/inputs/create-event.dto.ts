@@ -2,7 +2,7 @@ import { IsDateString, IsString, Length } from 'class-validator';
 
 export class CreateEventDto {
   @IsString()
-  @Length(5, 255, { message: 'Name must be at least 5 char' })
+  @Length(5, 255, { message: 'The name length is wrong' })
   name: string;
 
   @Length(5, 255)
