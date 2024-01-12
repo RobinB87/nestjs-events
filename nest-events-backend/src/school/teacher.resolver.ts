@@ -13,16 +13,13 @@ export class TeacherResolver {
 
   @Query(() => [Teacher])
   teachers(): Promise<Teacher[]> {
-    return this.teachersRepository.find({
-      relations: ['subjects'],
-    });
+    return this.teachersRepository.find();
   }
 
   @Query(() => Teacher)
   teacher(@Args('id', { type: () => Int }) id: number): Promise<Teacher> {
     return this.teachersRepository.findOneOrFail({
       where: { id },
-      relations: ['subjects'],
     });
   }
 
@@ -30,6 +27,6 @@ export class TeacherResolver {
   add(
     @Args('input', { type: () => TeacherAddInput }) input: TeacherAddInput,
   ): Promise<Teacher> {
-    return this.teachersRepository.save(input);
+    return this.teachersRepository.save(new Teacher(input));
   }
 }
