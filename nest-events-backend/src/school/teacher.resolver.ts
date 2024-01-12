@@ -12,6 +12,8 @@ export class TeacherResolver {
 
   @Query(() => [Teacher])
   teachers(): Promise<Teacher[]> {
-    return this.teachersRepository.find();
+    return this.teachersRepository.find({
+      relations: ['subjects'],
+    });
   }
 }
