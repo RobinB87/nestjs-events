@@ -8,8 +8,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { User } from './user.entity';
 import { UserResolver } from './user.resolver';
-import { UsersController } from './users.controller';
 import { UserService } from './user.service';
+import { UsersController } from './users.controller';
+import { UserDoesNotExistConstraint } from './validation/user-does-not-exist.constraint';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserService } from './user.service';
     AuthResolver,
     UserService,
     UserResolver,
+    UserDoesNotExistConstraint,
   ],
   controllers: [AuthController, UsersController],
 })

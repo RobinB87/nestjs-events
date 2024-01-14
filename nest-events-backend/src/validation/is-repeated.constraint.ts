@@ -12,7 +12,7 @@ export function IsRepeated(
     registerDecorator({
       name: 'isRepeated',
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       validator: {
         validate(value: any, { object }: ValidationArguments) {
