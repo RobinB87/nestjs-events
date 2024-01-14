@@ -4,12 +4,14 @@ import { CreateUserDto } from './input/create-user.dto';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UsersController {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {}
 
   @Post()
@@ -24,15 +26,10 @@ export class UsersController {
     if (existingUser)
       throw new BadRequestException(['Username OR email is already used']);
 
-    const user = new User();
-    user.username = input.username;
-    user.password = await this.authService.hashPassword(input.password);
-    user.email = input.email;
-    user.firstName = input.firstName;
-    user.lastName = input.lastName;
+    const user = await this.userService.create(input);
 
     return {
-      ...(await this.userRepository.save(user)),
+      ...user,
       token: this.authService.getTokenForUser(user),
     };
   }

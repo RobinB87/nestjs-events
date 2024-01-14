@@ -7,6 +7,10 @@ import { Event } from '../events/event.entity';
 @Entity()
 @ObjectType()
 export class User {
+  constructor(partial?: Partial<User>) {
+    Object.assign(this, partial);
+  }
+
   @PrimaryGeneratedColumn()
   @Expose()
   @Field(() => Int)
