@@ -1,5 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Course } from './course.entity';
 import { Gender } from './school.types';
 import { Subject } from './subject.entity';
 
@@ -29,4 +36,8 @@ export class Teacher {
   @ManyToMany(() => Subject, (subject) => subject.teachers)
   @Field(() => [Subject]) // specify explicitly that this is an array of teachers for graphql
   subjects: Promise<Subject[]>; // make lazy by using promise. Now the subjects are only fetched when you really specify it in the query
+
+  @OneToMany(() => Course, (course) => course.teacher)
+  @Field(() => [Teacher], { nullable: true })
+  courses: Promise<Course[]>;
 }
