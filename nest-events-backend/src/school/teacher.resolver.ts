@@ -1,11 +1,22 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TeacherAddInput } from './input/teacher-add.input';
 import { Teacher } from './teacher.entity';
+import { Logger } from '@nestjs/common';
 
 @Resolver(() => Teacher)
 export class TeacherResolver {
+  private readonly logger = new Logger(TeacherResolver.name);
+
   constructor(
     @InjectRepository(Teacher)
     private readonly teachersRepository: Repository<Teacher>,
@@ -28,5 +39,11 @@ export class TeacherResolver {
     @Args('input', { type: () => TeacherAddInput }) input: TeacherAddInput,
   ): Promise<Teacher> {
     return this.teachersRepository.save(new Teacher(input));
+  }
+
+  @ResolveField('subjects')
+  subjects(@Parent() teacher: Teacher) {
+    this.logger.debug('@ResolveField subjects was called');
+    return teacher.subjects; // lazy loaded relationship. So if you call without subjects { teacher }, this action  won't be called
   }
 }
