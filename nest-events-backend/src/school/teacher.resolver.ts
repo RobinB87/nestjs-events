@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   Args,
   Int,
@@ -9,12 +9,13 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthGuardJwtGql } from 'src/auth/auth-guard-jwt-gql';
 import { Repository } from 'typeorm';
 import { TeacherAddInput } from './input/teacher-add.input';
 import { TeacherEditInput } from './input/teacher-edit.input';
 import { EntityWithId } from './school.types';
-import { Teacher } from './teacher.entity';
 import { Subject } from './subject.entity';
+import { Teacher } from './teacher.entity';
 
 @Resolver(() => Teacher)
 export class TeacherResolver {
@@ -38,6 +39,7 @@ export class TeacherResolver {
   }
 
   @Mutation(() => Teacher, { name: 'teacherAdd' }) // as teacher is already used for get?
+  @UseGuards(AuthGuardJwtGql)
   add(
     @Args('input', { type: () => TeacherAddInput }) input: TeacherAddInput,
   ): Promise<Teacher> {
