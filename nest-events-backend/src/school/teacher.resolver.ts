@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   Args,
   Int,
@@ -10,8 +11,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TeacherAddInput } from './input/teacher-add.input';
+import { TeacherEditInput } from './input/teacher-edit.input';
 import { Teacher } from './teacher.entity';
-import { Logger } from '@nestjs/common';
 
 @Resolver(() => Teacher)
 export class TeacherResolver {
@@ -39,6 +40,20 @@ export class TeacherResolver {
     @Args('input', { type: () => TeacherAddInput }) input: TeacherAddInput,
   ): Promise<Teacher> {
     return this.teachersRepository.save(new Teacher(input));
+  }
+
+  @Mutation(() => Teacher, { name: 'teacherEdit' })
+  async edit(
+    @Args('id', { type: () => Int })
+    id: number,
+    @Args('input', { type: () => TeacherEditInput }) input: TeacherEditInput,
+  ): Promise<Teacher> {
+    const teacher = await this.teachersRepository.findOneOrFail({
+      where: { id },
+    });
+    return this.teachersRepository.save(
+      new Teacher(Object.assign(teacher, input)),
+    );
   }
 
   @ResolveField('subjects')
