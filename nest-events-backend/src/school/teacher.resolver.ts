@@ -12,7 +12,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TeacherAddInput } from './input/teacher-add.input';
 import { TeacherEditInput } from './input/teacher-edit.input';
+import { EntityWithId } from './school.types';
 import { Teacher } from './teacher.entity';
+import { Subject } from './subject.entity';
 
 @Resolver(() => Teacher)
 export class TeacherResolver {
@@ -56,8 +58,22 @@ export class TeacherResolver {
     );
   }
 
+  @Mutation(() => EntityWithId, { name: 'teacherDelete' })
+  async delete(
+    @Args('id', { type: () => Int })
+    id: number,
+  ): Promise<EntityWithId> {
+    const teacher = await this.teachersRepository.findOneOrFail({
+      where: { id },
+    });
+
+    await this.teachersRepository.remove(teacher);
+
+    return new EntityWithId(id);
+  }
+
   @ResolveField('subjects')
-  subjects(@Parent() teacher: Teacher) {
+  subjects(@Parent() teacher: Teacher): Promise<Subject[]> {
     this.logger.debug('@ResolveField subjects was called');
     return teacher.subjects; // lazy loaded relationship. So if you call without subjects { teacher }, this action  won't be called
   }
