@@ -1,5 +1,4 @@
 import { Expose } from 'class-transformer';
-import { User } from '../auth/user.entity';
 import {
   Column,
   Entity,
@@ -8,8 +7,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from '../auth/user.entity';
+import { Paginated } from '../pagination/paginator';
 import { Attendee } from './attendee.entity';
-import { PaginationResult } from '../pagination/paginator';
 
 @Entity()
 export class Event {
@@ -53,4 +53,4 @@ export class Event {
   attendeeCount?: number;
 }
 
-export type PaginatedEvents = PaginationResult<Event>;
+export class PaginatedEvents extends Paginated<Event>(Event) {}
