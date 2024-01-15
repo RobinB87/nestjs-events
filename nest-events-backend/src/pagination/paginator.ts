@@ -9,7 +9,7 @@ export interface PaginateOptions {
   total?: boolean;
 }
 
-export function Paginated<T>(classRef: Type) {
+export function Paginated<T>(classRef: Type<T>) {
   @ObjectType()
   class PaginationResult<T> {
     constructor(partial: Partial<PaginationResult<T>>) {
@@ -17,23 +17,23 @@ export function Paginated<T>(classRef: Type) {
     }
 
     @Expose()
-    @Field()
+    @Field({ nullable: true })
     first: number;
 
     @Expose()
-    @Field()
+    @Field({ nullable: true })
     last: number;
 
     @Expose()
-    @Field()
+    @Field({ nullable: true })
     limit: number;
 
     @Expose()
-    @Field()
+    @Field({ nullable: true })
     total?: number;
 
     @Expose()
-    @Field(() => [classRef])
+    @Field(() => [classRef], { nullable: true })
     data: T[];
   }
 
