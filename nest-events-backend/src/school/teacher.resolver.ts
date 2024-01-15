@@ -9,8 +9,8 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthGuardJwtGql } from 'src/auth/auth-guard-jwt-gql';
 import { Repository } from 'typeorm';
+import { AuthGuardJwtGql } from '../auth/auth-guard-jwt-gql';
 import { TeacherAddInput } from './input/teacher-add.input';
 import { TeacherEditInput } from './input/teacher-edit.input';
 import { EntityWithId } from './school.types';
