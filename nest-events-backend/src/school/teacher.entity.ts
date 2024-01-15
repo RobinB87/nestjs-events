@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Paginated } from 'src/pagination/paginator';
 import {
   Column,
   Entity,
@@ -41,3 +42,6 @@ export class Teacher {
   @Field(() => [Teacher], { nullable: true })
   courses: Promise<Course[]>;
 }
+
+@ObjectType()
+export class PaginatedTeachers extends Paginated<Teacher>(Teacher) {}
